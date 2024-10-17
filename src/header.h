@@ -7,18 +7,6 @@
 
 using namespace std;
 
-// Overload the << operator for cardType enum
-// This allows us to print the cardType enum as a string
-ostream& operator<<(ostream& os, const cardType& type) {
-	switch (type) {
-		case cardType::CREATURE: os << "CREATURE"; break;
-		case cardType::SPELL: os << "SPELL"; break;
-		case cardType::ENCHANTMENT: os << "ENCHANTMENT"; break;
-		case cardType::MANNA: os << "MANNA"; break;
-	}
-	return os;
-}
-	
 //Enumerate the types of cards
 enum class cardType {
 	CREATURE,
@@ -26,6 +14,20 @@ enum class cardType {
 	ENCHANTMENT,
 	MANNA
 };
+
+
+// Overload the << operator for cardType enum
+// This allows us to print the cardType enum as a string
+inline ostream& operator<<(ostream& os, const cardType& type) {
+	switch (type) {
+		case cardType::CREATURE: os << "CREATURE"; break;
+		case cardType::SPELL: os << "SPELL"; break;
+		case cardType::ENCHANTMENT: os << "ENCHANTMENT"; break;
+		case cardType::MANNA: os << "MANNA"; break;
+	}
+	return os;
+};
+
 
 //Card class
 class Card {
@@ -62,7 +64,6 @@ class Player {
 private:
 	//Player attributes
 	string name;
-	int health = 20;
 	int mannaCount = 0;
 	static const int MAX_CARDS = 7;
 	static const int MAX_BATTLEFIELD = 5;
@@ -71,10 +72,14 @@ private:
 	Card* hand[MAX_CARDS];
 	int handCount = 0;
 
-	Card* battlefield[MAX_BATTLEFIELD];
 	int battlefieldCount = 0;
 
 public:
+	//Public Player attributes
+	int health = 20;
+	Card* battlefield[MAX_BATTLEFIELD];
+
+
 	//Constructor
 	Player(string name) : name(name) {
 		for (int i = 0; i < MAX_CARDS; i++) {
@@ -139,7 +144,10 @@ public:
 			cout << hand[i]->typeofCard << endl;
 		}
 	}
-	
+
+	string getName() {
+		return name;
+	}
 };
 
 
