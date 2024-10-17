@@ -16,19 +16,6 @@ enum class cardType {
 };
 
 
-// Overload the << operator for cardType enum
-// This allows us to print the cardType enum as a string
-inline ostream& operator<<(ostream& os, const cardType& type) {
-	switch (type) {
-		case cardType::CREATURE: os << "CREATURE"; break;
-		case cardType::SPELL: os << "SPELL"; break;
-		case cardType::ENCHANTMENT: os << "ENCHANTMENT"; break;
-		case cardType::MANNA: os << "MANNA"; break;
-	}
-	return os;
-};
-
-
 //Card class
 class Card {
 public:
@@ -140,8 +127,7 @@ public:
 		cout << name << "'s hand:" << endl;
 
 		for (int i = 0; i < handCount; i++) {
-			cout << i << ": " << hand[i]->name << " Manna Cost: " << hand[i]->mannaCost << endl;
-			cout << hand[i]->typeofCard << endl;
+			cout << i << ": " << hand[i]->name << " " << hand[i]->mannaCost << endl;
 		}
 	}
 
