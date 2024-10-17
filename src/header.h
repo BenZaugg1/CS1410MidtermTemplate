@@ -11,7 +11,6 @@ using namespace std;
 enum class cardType {
 	CREATURE,
 	SPELL,
-	ENCHANTMENT,
 	MANNA
 };
 
@@ -51,7 +50,7 @@ class Player {
 private:
 	//Player attributes
 	string name;
-	int mannaCount = 0;
+	int mannaCount = 10;
 	static const int MAX_CARDS = 7;
 	static const int MAX_BATTLEFIELD = 5;
 
