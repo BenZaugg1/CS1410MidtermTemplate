@@ -6,6 +6,18 @@
 #include <iostream>
 
 using namespace std;
+
+// Overload the << operator for cardType enum
+// This allows us to print the cardType enum as a string
+ostream& operator<<(ostream& os, const cardType& type) {
+	switch (type) {
+		case cardType::CREATURE: os << "CREATURE"; break;
+		case cardType::SPELL: os << "SPELL"; break;
+		case cardType::ENCHANTMENT: os << "ENCHANTMENT"; break;
+		case cardType::MANNA: os << "MANNA"; break;
+	}
+	return os;
+}
 	
 //Enumerate the types of cards
 enum class cardType {
@@ -17,12 +29,11 @@ enum class cardType {
 
 //Card class
 class Card {
-private:
+public:
 	string name;
 	cardType typeofCard;
 	int mannaCost;
 
-public:
 	Card(string name, cardType typeofCard, int mannaCost) : name(name), typeofCard(typeofCard), mannaCost(mannaCost) {}
 
 	virtual void play() = 0;
@@ -31,15 +42,13 @@ public:
 
 //Creature class
 class Creature : public Card {
-private:
+public:
 	string name;
 	int health;
 	int damage;
-	int mannaCost;
 
-public:
 	Creature(string name, int health, int damage, int mannaCost) : 
-		Card(name, cardType::CREATURE, mannaCost), name(name), health(health), damage(damage), mannaCost(mannaCost) {}
+		Card(name, cardType::CREATURE, mannaCost), name(name), health(health), damage(damage) {}
 
 	void play() override {
 		cout << "Creature " << name << " played" << endl;
@@ -51,12 +60,14 @@ public:
 //Player class
 class Player {
 private:
-	string name = "John Doe";
+	//Player attributes
+	string name;
 	int health = 20;
 	int mannaCount = 0;
 	static const int MAX_CARDS = 7;
 	static const int MAX_BATTLEFIELD = 5;
 
+	//Set up arrays for hand and battlefield
 	Card* hand[MAX_CARDS];
 	int handCount = 0;
 
@@ -64,6 +75,7 @@ private:
 	int battlefieldCount = 0;
 
 public:
+	//Constructor
 	Player(string name) : name(name) {
 		for (int i = 0; i < MAX_CARDS; i++) {
 			hand[i] = nullptr;
@@ -73,7 +85,60 @@ public:
 		}
 	}
 
-	
+	//Draw a card
+	void drawCard(Card* card) {
+		if (handCount < MAX_CARDS) {
+			hand[handCount] = card;
+			handCount++;
+			cout << "Card " << card->name << " drawn" << endl;
+		}
+		else {
+			cout << "Hand is full" << endl;
+		}
+	}
+
+	//Play a card
+	void playCard(int index){
+		if (index < handCount && index >= 0) {
+			Card* card = hand[index];
+			if (hand[index]->mannaCost <= mannaCount) {
+				if (battlefieldCount < MAX_BATTLEFIELD) {
+					//Add card to the battlefield
+					battlefield[battlefieldCount] = card;
+					battlefieldCount++;
+
+					//Remove card from hand
+					for (int i = index; i < handCount - 1; i++) {
+						hand[i] = hand[i + 1];
+					}
+					hand[handCount - 1] = nullptr;
+					handCount--;
+
+					//Play the Card
+					card->play();
+				}
+				else {
+					cout << "Battlefield is full" << endl;
+				}
+			}
+			else {
+				cout << "Not enough manna" << endl;
+			}
+		}
+		else {
+			cout << "Invalid index" << endl;
+		}
+	}
+
+	//Print the hand
+	void showHand() {
+		cout << name << "'s hand:" << endl;
+
+		for (int i = 0; i < handCount; i++) {
+			cout << i << ": " << hand[i]->name << " Manna Cost: " << hand[i]->mannaCost << endl;
+			cout << hand[i]->typeofCard << endl;
+		}
+	}
 	
 };
 
