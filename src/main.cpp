@@ -16,45 +16,54 @@ Creature creatures[] = {
 	Creature("Fiend", 2, 2, 2),
 };
 
+//Draw Phase
 void drawPhase(Player& player){
 	player.drawCard(new Creature(creatures[rand() % 3]));
-	//return;
 }
 
+//Combat Phase
 void combatPhase(Player& attacker, Player& defender){
 	cout << "Combat phase" << endl;
+	//Check if attacker has creatures to attack
 	if (attacker.getBattlefieldCount() == 0) {
 		cout << attacker.getName() << " has no creatures to attack with." << endl;
-		// return;
 	}
 	else{
+		//Loop through the attacker's battlefield
 		for (Card* card : attacker.battlefield) {
+			//Check if the card is a creature or null
 			if (card == nullptr) {
 				continue; // Skip to the next card
 			}
+			//Creature attacks enemy player	
 			if (card->typeofCard == cardType::CREATURE) {
+				//Cast the card to a creature
 				Creature* creature = dynamic_cast<Creature*>(card);
 				cout << attacker.getName() << "'s " << creature->name << " attacks!" << endl;
 				defender.health -= creature->damage;
 				cout << defender.getName() << " takes " << creature->damage << " damage, life is now " << defender.health << endl;
-
 			}
 		}
 	}
-	//return;
 }
 
+//Main Phase
 void mainPhase(Player& player) {
 	cout << player.getName() << " main phase" << endl;
+	player.drawCard(new Creature(creatures[rand() % 3]));
 	while (true) {
+		//Get the player's choice of card to play
 		cout << "Enter card index to play or (9) to see your hand: ";
 		int index;
 		cin >> index;
+		//Check if the player wants to see their hand
 		if (index == 9) {
 			player.showHand();
 			continue; 
 		}
+		//Check if the index is valid
 		if (index >= 0 && index < player.getHandCount()) {
+			//Check if the card is a creature then place it on the battlefield
 			Card* card = player.hand[index];
 			if (card->typeofCard == cardType::CREATURE) {
 				player.playCard(index);
@@ -101,7 +110,6 @@ int main(){
 		combatPhase(player1, player2);
 		combatPhase(player2, player1);
 
-		// Debugging: Print health after combat phases
 		cout << player1.getName() << "'s health: " << player1.health << endl;
 		cout << player2.getName() << "'s health: " << player2.health << endl;
 

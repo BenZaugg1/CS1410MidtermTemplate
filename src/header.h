@@ -51,14 +51,14 @@ private:
 	int mannaCount = 5;
 	static const int MAX_CARDS = 7;
 	static const int MAX_BATTLEFIELD = 5;
-
-	//Set up arrays for hand and battlefield
 	int handCount = 0;
 	int battlefieldCount = 0;
 
 public:
 	//Public Player attributes
 	int health = 20;
+
+	//Player card arrays
 	Card* hand[MAX_CARDS];
 	Card* battlefield[MAX_BATTLEFIELD];
 
@@ -130,18 +130,18 @@ public:
 		}
 	}
 
+	//Getters
 	string getName() {
 		return name;
 	}
-
 	int getHandCount() {
 		return handCount;
 	}
-
 	int getBattlefieldCount() {
 		return battlefieldCount;
 	}
 
+	//Add manna (Setter)
 	void addManna(int manna) {
 		mannaCount += manna;
 	}
