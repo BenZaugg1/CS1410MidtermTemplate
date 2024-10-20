@@ -11,6 +11,7 @@ using namespace std;
 enum class cardType {
 	CREATURE,
 	SPELL,
+	ENCHANTMENT,
 	MANNA
 };
 
@@ -25,7 +26,6 @@ public:
 	Card(string name, cardType typeofCard, int mannaCost) : name(name), typeofCard(typeofCard), mannaCost(mannaCost) {}
 
 	virtual void play() = 0;
-
 };
 
 //Creature class
@@ -41,28 +41,25 @@ public:
 	void play() override {
 		cout << "Creature " << name << " played" << endl;
 	}
-
 };
-
 
 //Player class
 class Player {
 private:
 	//Player attributes
 	string name;
-	int mannaCount = 10;
+	int mannaCount = 5;
 	static const int MAX_CARDS = 7;
 	static const int MAX_BATTLEFIELD = 5;
 
 	//Set up arrays for hand and battlefield
-	Card* hand[MAX_CARDS];
 	int handCount = 0;
-
 	int battlefieldCount = 0;
 
 public:
 	//Public Player attributes
 	int health = 20;
+	Card* hand[MAX_CARDS];
 	Card* battlefield[MAX_BATTLEFIELD];
 
 
@@ -125,13 +122,28 @@ public:
 	void showHand() {
 		cout << name << "'s hand:" << endl;
 
+		cout << "Manna: " << mannaCount << endl;
+
+		cout << "Index: Name, Manna Cost" << endl;
 		for (int i = 0; i < handCount; i++) {
-			cout << i << ": " << hand[i]->name << " " << hand[i]->mannaCost << endl;
+			cout << i << ": " << hand[i]->name << ", " << hand[i]->mannaCost << endl;
 		}
 	}
 
 	string getName() {
 		return name;
+	}
+
+	int getHandCount() {
+		return handCount;
+	}
+
+	int getBattlefieldCount() {
+		return battlefieldCount;
+	}
+
+	void addManna(int manna) {
+		mannaCount += manna;
 	}
 };
 
